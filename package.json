@@ -70,6 +70,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
+    "@netlify/plugin-nextjs": "^5.10.1",
     "@tailwindcss/typography": "^0.5.15",
     "@types/d3-path": "^3.1.1",
     "@types/d3-scale": "^4.0.9",

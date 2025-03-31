@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'The Stoic Way',
   webDir: 'dist',
   server: {
-    url: "http://cb45303e-3ebc-412c-aa7b-7d64b814b075.lovableproject.com",
+    url: "https://cb45303e-3ebc-412c-aa7b-7d64b814b075.lovableproject.com?forceHideBadge=true",
     cleartext: true
   },
 };

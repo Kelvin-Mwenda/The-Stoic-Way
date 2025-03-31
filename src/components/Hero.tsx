@@ -18,7 +18,7 @@ const Hero = () => {
               <div className="rounded-xl overflow-hidden shadow-lg border border-border mx-2">
                 <AspectRatio ratio={16/10} className="bg-muted">
                   <img 
-                    src="/public/lovable-uploads/f0a57e6b-48a5-4cee-9a25-b3d7514481a0.png" 
+                    src="/public/lovable-uploads/marcus-statue.png" 
                     alt="Statue of Marcus Aurelius, Roman Emperor and Stoic philosopher, mounted on horseback" 
                     className="w-full h-full object-cover object-center grayscale"
                   />

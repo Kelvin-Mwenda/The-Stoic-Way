@@ -90,8 +90,8 @@ or
 Open the app in your browser:
 Navigate to http://localhost:3000 (or the port specified in your terminal).
 
-🤝 Contributing
-We welcome contributions from anyone who shares our passion for Stoicism and web development! Whether you’re fixing bugs, adding features, or improving documentation, your efforts are greatly appreciated.
+🤝 ### Contributing
+I welcome contributions from anyone who shares our passion for Stoicism and web development! Whether you’re fixing bugs, adding features, or improving documentation, your efforts are greatly appreciated.
 
 # How to Contribute
 ## Fork the repository:
@@ -112,14 +112,19 @@ We welcome contributions from anyone who shares our passion for Stoicism and web
     git push origin feature/your-feature-name
 ```
 Submit a pull request detailing your changes.
-📜 ##License
+
+📜 ### License
+
 This project is licensed under the MIT License . Feel free to use, modify, and distribute the code as you see fit. For more details, see the LICENSE file.
 
-🙏 ## Acknowledgments
+🙏 ### Acknowledgments
+
 Marcus Aurelius , Epictetus , and Seneca —whose timeless wisdom continues to inspire millions.
 The Supabase team for providing an excellent backend solution.
 The React and Tailwind CSS communities for their incredible tools and resources.
-📧 ## Contact
+
+📧 ### Contact
+
 For questions, feedback, or collaboration opportunities, feel free to reach out:
 
 Email: kelvinmwenda@example.com

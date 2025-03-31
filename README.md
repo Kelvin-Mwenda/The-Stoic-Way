@@ -1,6 +1,6 @@
 # The Stoic Way
 
-![Stoic Logo](./public/marcus.png) <!-- Replace with your actual logo/image -->
+![Stoic Logo](./public/lovable-uploads/marcus-statue.png) <!-- Replace with your actual logo/image -->
 
 > "We suffer more often in imagination than in reality." — Seneca
 
@@ -113,17 +113,17 @@ I welcome contributions from anyone who shares our passion for Stoicism and web 
 ```
 Submit a pull request detailing your changes.
 
-📜 ### License
+ ### 📜 License
 
 This project is licensed under the MIT License . Feel free to use, modify, and distribute the code as you see fit. For more details, see the LICENSE file.
 
-🙏 ### Acknowledgments
+ ### 🙏 Acknowledgments
 
 Marcus Aurelius , Epictetus , and Seneca —whose timeless wisdom continues to inspire millions.
 The Supabase team for providing an excellent backend solution.
 The React and Tailwind CSS communities for their incredible tools and resources.
 
-📧 ### Contact
+ ### 📧 Contact
 
 For questions, feedback, or collaboration opportunities, feel free to reach out:
 

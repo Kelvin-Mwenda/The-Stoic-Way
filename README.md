@@ -73,7 +73,6 @@ Install dependencies:
 Set up environment variables:
 Create a .env file in the root directory and add your Supabase credentials:
 
-plaintext
 ```
     VITE_SUPABASE_URL=your-supabase-url
     VITE_SUPABASE_ANON_KEY=your-anon-key

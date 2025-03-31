@@ -1,1 +1,11 @@
 project_id = "yvhvyanvirlawruucsjm"
+
+[build]
+  command = "npm run build"  # Command to build your project
+  publish = "dist"            # Directory to publish after build
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true

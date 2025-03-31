@@ -88,9 +88,10 @@ or
     yarn dev
 ```
 Open the app in your browser:
+
 Navigate to http://localhost:3000 (or the port specified in your terminal).
 
-🤝 ### Contributing
+### 🤝 Contributing
 I welcome contributions from anyone who shares our passion for Stoicism and web development! Whether you’re fixing bugs, adding features, or improving documentation, your efforts are greatly appreciated.
 
 # How to Contribute

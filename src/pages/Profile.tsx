@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -14,7 +13,7 @@ import { User } from "lucide-react";
 
 interface ProfileData {
   id: string;
-  full_name: string;
+  full_name: string | null;
   bio: string | null;
   avatar_url: string | null;
 }
@@ -45,7 +44,7 @@ const Profile = () => {
 
       try {
         const { data, error } = await supabase
-          .from("user_profiles")
+          .from("UserProfile")
           .select("*")
           .eq("id", user.id)
           .single();
@@ -143,7 +142,7 @@ const Profile = () => {
       
       // Update profile
       const { error } = await supabase
-        .from("user_profiles")
+        .from("UserProfile")
         .update({
           full_name: fullName,
           bio,
@@ -169,13 +168,22 @@ const Profile = () => {
         avatar_url: newAvatarUrl,
       } : null);
       
-    } catch (error: any) {
-      console.error("Error updating profile:", error);
-      toast({
-        title: "Update failed",
-        description: error.message || "There was an error updating your profile.",
-        variant: "destructive",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error updating profile:", error);
+        toast({
+          title: "Update failed",
+          description: error.message || "There was an error updating your profile.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Update failed",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

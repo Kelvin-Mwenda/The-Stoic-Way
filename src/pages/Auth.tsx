@@ -51,7 +51,7 @@ const Auth = () => {
     const params = new URLSearchParams(location.search);
     params.set("mode", mode);
     navigate(`${location.pathname}?${params.toString()}`, { replace: true });
-  }, [mode, location.pathname, navigate]);
+  }, [mode, location.pathname, location.search, navigate]);
 
   // Redirect if user is already logged in
   useEffect(() => {
@@ -93,12 +93,22 @@ const Auth = () => {
         // Successful login is handled by AuthContext
         navigate("/");
       }
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "An unexpected error occurred.",
-        variant: "destructive",
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error sending message:", error);
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred while sending your message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -130,12 +140,22 @@ const Auth = () => {
           setMode("login");
         }, 1500);
       }
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "An unexpected error occurred.",
-        variant: "destructive",
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error sending message:", error);
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred while sending your message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

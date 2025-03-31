@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "@/components/Layout";
@@ -32,8 +31,9 @@ interface JournalEntry {
   entry_date: string;
   gratitude_notes: string | null;
   reflection_notes: string | null;
-  created_at: string;
-  updated_at: string;
+  created_at: Date | null;
+  updated_at: Date | null;
+  user_id: string | null;
 }
 
 const Journal = () => {
@@ -70,7 +70,7 @@ const Journal = () => {
 
       try {
         const { data, error } = await supabase
-          .from("stoic_journals")
+          .from("StoicJournal")
           .select("*")
           .eq("user_id", user.id)
           .order("entry_date", { ascending: false });
@@ -80,7 +80,22 @@ const Journal = () => {
           return;
         }
 
-        setEntries(data || []);
+        // Convert timestamps to Date objects and specify the type
+        const entries: JournalEntry[] = data.map((entry: {
+          created_at: string | null;
+          entry_date: string;
+          gratitude_notes: string | null;
+          id: string;
+          reflection_notes: string | null;
+          updated_at: string | null;
+          user_id: string | null;
+        }) => ({
+          ...entry,
+          created_at: entry.created_at ? new Date(entry.created_at) : null,
+          updated_at: entry.updated_at ? new Date(entry.updated_at) : null,
+        }));
+
+        setEntries(entries);
         
         // Check if there's an entry for today
         const todayEntry = data?.find(entry => entry.entry_date === today);
@@ -110,7 +125,7 @@ const Journal = () => {
       if (todayEntry) {
         // Update existing entry
         const { error } = await supabase
-          .from("stoic_journals")
+          .from("StoicJournal")
           .update({
             gratitude_notes: gratitudeNotes,
             reflection_notes: reflectionNotes,
@@ -127,7 +142,7 @@ const Journal = () => {
                 ...entry,
                 gratitude_notes: gratitudeNotes,
                 reflection_notes: reflectionNotes,
-                updated_at: new Date().toISOString(),
+                updated_at: new Date(),
               }
             : entry
         ));
@@ -139,7 +154,7 @@ const Journal = () => {
       } else {
         // Create new entry
         const { data, error } = await supabase
-          .from("stoic_journals")
+          .from("StoicJournal")
           .insert({
             user_id: user.id,
             entry_date: today,
@@ -150,22 +165,38 @@ const Journal = () => {
           .single();
           
         if (error) throw error;
+
+        // Ensure the new entry conforms to the JournalEntry type
+        const newEntry: JournalEntry = {
+          ...data,
+          created_at: data.created_at ? new Date(data.created_at) : null,
+          updated_at: data.updated_at ? new Date(data.updated_at) : null,
+        };
         
         // Update local state
-        setEntries([data, ...entries]);
+        setEntries([newEntry, ...entries]);
         
         toast({
           title: "Journal saved",
           description: "Your journal entry has been saved."
         });
       }
-    } catch (error: any) {
-      console.error("Error saving journal entry:", error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to save journal entry",
-        variant: "destructive",
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error saving journal entry:", error);
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred while sending your message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -191,7 +222,7 @@ const Journal = () => {
     
     try {
       const { error } = await supabase
-        .from("stoic_journals")
+        .from("StoicJournal")
         .update({
           gratitude_notes: gratitudeNotes,
           reflection_notes: reflectionNotes,
@@ -206,7 +237,7 @@ const Journal = () => {
         ...selectedEntry,
         gratitude_notes: gratitudeNotes,
         reflection_notes: reflectionNotes,
-        updated_at: new Date().toISOString(),
+        updated_at: new Date(),
       };
       
       setEntries(entries.map(entry => 
@@ -220,13 +251,23 @@ const Journal = () => {
         title: "Entry updated",
         description: "Your journal entry has been updated."
       });
-    } catch (error: any) {
-      console.error("Error updating journal entry:", error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to update journal entry",
-        variant: "destructive",
-      });
+    } catch (error) {
+      
+      if (error instanceof Error) {
+        console.error("Error updating journal entry:", error);
+        toast({
+          title: "Error",
+          description: error.message || "Failed to delete journal entry",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -243,7 +284,7 @@ const Journal = () => {
     
     try {
       const { error } = await supabase
-        .from("stoic_journals")
+        .from("StoicJournal")
         .delete()
         .eq("id", selectedEntry.id);
         
@@ -257,13 +298,22 @@ const Journal = () => {
         title: "Entry deleted",
         description: "Your journal entry has been deleted."
       });
-    } catch (error: any) {
-      console.error("Error deleting journal entry:", error);
-      toast({
-        title: "Error",
-        description: error.message || "Failed to delete journal entry",
-        variant: "destructive",
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error deleting journal entry:", error);
+        toast({
+          title: "Error",
+          description: error.message || "Failed to delete journal entry",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -398,7 +448,7 @@ const Journal = () => {
                           {format(new Date(selectedEntry.entry_date), 'MMMM d, yyyy')}
                         </CardTitle>
                         <CardDescription>
-                          Last updated: {format(new Date(selectedEntry.updated_at), 'MMM d, yyyy h:mm a')}
+                          Last updated: {selectedEntry.updated_at ? format(new Date(selectedEntry.updated_at), 'MMM d, yyyy h:mm a') : 'Never'}
                         </CardDescription>
                       </div>
                       <div className="flex space-x-2">

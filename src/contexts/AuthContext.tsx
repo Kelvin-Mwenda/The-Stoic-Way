@@ -1,20 +1,28 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+
+interface AuthError {
+  message: string;
+  code?: string; // Optional error code
+}
+interface AuthData {
+  user: User | null; // Assuming User is defined elsewhere
+  session: Session | null; // Assuming Session is defined elsewhere
+}
 
 interface AuthContextProps {
   session: Session | null;
   user: User | null;
   isLoading: boolean;
   signUp: (email: string, password: string, fullName: string) => Promise<{
-    error: any | null;
-    data: any | null;
+    error: AuthError | null;
+    data: AuthData | null;
   }>;
   signIn: (email: string, password: string) => Promise<{
-    error: any | null;
-    data: any | null;
+    error: AuthError | null;
+    data: AuthData | null;
   }>;
   signOut: () => Promise<void>;
 }
@@ -61,7 +69,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => subscription.unsubscribe();
   }, [toast]);
 
-  const signUp = async (email: string, password: string, fullName: string) => {
+  const signUp = async (email: string, password: string, fullName: string): Promise<{
+    error: AuthError | null;
+    data: AuthData | null;
+  }> => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -73,24 +84,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
       
-      return { data, error };
+      return {
+        error: error ? { message: error.message, code: error.code } : null,
+        data: data ? { user: data.user, session: data.session } : null,
+      };
     } catch (error) {
       console.error("Error in signUp:", error);
-      return { data: null, error };
+      return { data: null, error: { message: "An unexpected error occurred." } };
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<{
+    error: AuthError | null;
+    data: AuthData | null;
+  }> => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
       
-      return { data, error };
+      return {
+        error: error ? { message: error.message, code: error.code } : null,
+        data: data ? { user: data.user, session: data.session } : null,
+      };
     } catch (error) {
       console.error("Error in signIn:", error);
-      return { data: null, error };
+      return { data: null, error: { message: "An unexpected error occurred." } };
     }
   };
 

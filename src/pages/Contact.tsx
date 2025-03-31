@@ -52,13 +52,23 @@ const Contact = () => {
         });
         setEmail("");
       }
-    } catch (error: any) {
-      console.error("Error subscribing to newsletter:", error);
-      toast({
-        title: "Subscription failed",
-        description: error.message || "An error occurred while subscribing. Please try again.",
-        variant: "destructive",
-      });
+    } catch (error) {
+      
+      if (error instanceof Error) {
+        console.error("Error subscribing to newsletter:", error);
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred while sending your message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubscribing(false);
     }

@@ -1,11 +1,10 @@
 
-import React from "react";
 import Layout from "../components/Layout";
 import Hero from "../components/Hero";
 import KeyHighlights from "../components/KeyHighlights";
 import FeaturedContent from "../components/FeaturedContent";
 import CallToAction from "../components/CallToAction";
-import { ArrowRight, UserPlus, LogIn } from "lucide-react";
+import { UserPlus, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Index = () => {

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,9 +15,12 @@ import ScrollToTop from "./components/ScrollToTop";
 import Profile from "./pages/Profile";
 import Journal from "./pages/Journal";
 import VerifyEmail from "./pages/verify-email";
+import dynamic from 'next/dynamic';
 
 // Initialize the query client for React Query
 const queryClient = new QueryClient();
+
+const DynamicComponentWithNoSSR = dynamic(() => import('./components/BrowserOnlyComponent'), { ssr: false });
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -40,6 +42,7 @@ const App = () => (
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <DynamicComponentWithNoSSR />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

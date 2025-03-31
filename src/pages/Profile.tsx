@@ -39,6 +39,7 @@ const Profile = () => {
 
   // Fetch user profile
   useEffect(() => {
+    console.log("profile", profile);
     const fetchProfile = async () => {
       if (!user) return;
 
@@ -64,7 +65,7 @@ const Profile = () => {
     };
 
     fetchProfile();
-  }, [user]);
+  });
 
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -86,7 +87,7 @@ const Profile = () => {
     
     try {
       // Create the avatars bucket if it doesn't exist
-      const { data: bucketData, error: bucketError } = await supabase
+      const {error: bucketError } = await supabase
         .storage
         .getBucket('avatars');
       

@@ -59,13 +59,22 @@ const ContactForm = () => {
       });
       
       form.reset();
-    } catch (error: any) {
-      console.error("Error sending message:", error);
-      toast({
-        title: "Error",
-        description: error.message || "An error occurred while sending your message. Please try again.",
-        variant: "destructive",
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("Error sending message:", error);
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred while sending your message. Please try again.",
+          variant: "destructive",
+        });
+      } else {
+        console.error("Unexpected error:", error);
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred. Please try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
